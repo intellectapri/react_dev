@@ -28,7 +28,6 @@ class BonzaDatePickerField extends React.Component {
               locale="en-AU"
               disabled={this.props.disabled ? true : false}
               onChange={(value) => {
-                console.log(this.props.value);
                 this.props.onChange(this.props.name, value);
               }}
               value={this.props.value}

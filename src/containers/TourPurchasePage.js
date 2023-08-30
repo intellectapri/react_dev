@@ -20,7 +20,7 @@ import {
   getPurchases,
 } from "../middleware/api/purchases";
 import { getCustomerCommission } from "../middleware/api/customers";
-import { getProductTourPricing } from "../middleware/api/products";
+import { getProductTourPricing, getCountTourProduct } from "../middleware/api/products";
 import {
   getAllotmentsForRange,
   getAllotmentAvailability,
@@ -488,6 +488,7 @@ class TourPurchasePage extends React.Component {
 
       this.props.products.map((product) => {
         if (parseInt(product.productID) === parseInt(this.state.productId)) {
+          console.log(product);
           if (
             product.minGuestNo &&
             this.state.totalRiders < product.minGuestNo &&
@@ -499,6 +500,28 @@ class TourPurchasePage extends React.Component {
           }
         }
       });
+
+      if (this.state.productId){
+        getCountTourProduct(this.state.productId)
+          .then((results) => {
+            let resultCount = JSON.parse(JSON.stringify(results[0]));
+            let totRideTour = parseInt(this.state.totalRiders) + parseInt(resultCount.tot_guest);
+            let totLess = parseInt(resultCount.minGuestNo) - parseInt(this.state.totalRiders);
+            console.log(totLess);
+            if(parseInt(totRideTour) < parseInt(resultCount.minGuestNo)){
+              errors.push(
+                `you less ${totLess} rider to start the tour`,
+              );
+            }
+          })
+          .catch(() => {
+            this.setState({
+              loading: false,
+              validationErrors: [`Error occured while count tour product`],
+            });
+          });
+      }
+
 
       if (errors.length === 0) {
         // Allotment Check

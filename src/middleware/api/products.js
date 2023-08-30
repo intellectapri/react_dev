@@ -247,3 +247,24 @@ export const restoreProduct = (productId) => {
       });
   });
 };
+
+
+/**
+ * Fetches count tour by product id
+ *
+ * @param {Object} productId Product identifier
+ *
+ * @returns {Promise}
+ */
+export const getCountTourProduct = (productId) => {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`${config.apiURL}products/${productId}/countTour`, { withCredentials: true })
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
