@@ -85,3 +85,13 @@
 .react-date-picker__calendar .react-calendar {
   border-width: thin;
 }
+.custom-tile-content-lightseagreen {
+  color: lightseagreen;
+  font-size: 10px;
+  margin: 0;
+}
+.custom-tile-content-blue {
+  color: blue;
+  font-size: 10px;
+  margin: 0;
+}

@@ -486,19 +486,19 @@ class TourPurchasePage extends React.Component {
         errors.push(`Please add at least one rider`);
       }
 
-      this.props.products.map((product) => {
-        if (parseInt(product.productID) === parseInt(this.state.productId)) {
-          if (
-            product.minGuestNo &&
-            this.state.totalRiders < product.minGuestNo &&
-            this.state.twoDayRule === 0
-          ) {
-            errors.push(
-              `Minimum ${product.minGuestNo} guests required - Override to allow the booking to go ahead`,
-            );
-          }
-        }
-      });
+      // this.props.products.map((product) => {
+      //   if (parseInt(product.productID) === parseInt(this.state.productId)) {
+      //     if (
+      //       product.minGuestNo &&
+      //       this.state.totalRiders < product.minGuestNo &&
+      //       this.state.twoDayRule === 0
+      //     ) {
+      //       errors.push(
+      //         `Minimum ${product.minGuestNo} guests required - Override to allow the booking to go ahead`,
+      //       );
+      //     }
+      //   }
+      // });
 
       if (errors.length === 0) {
         // Allotment Check
@@ -639,7 +639,7 @@ class TourPurchasePage extends React.Component {
               });
             });
         } else {
-          console.log(data);
+          // console.log(data);
           createTourPurchase(data)
             .then((identifiers) => {
               if(identifiers.messageValidation){

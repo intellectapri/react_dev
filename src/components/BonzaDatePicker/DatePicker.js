@@ -19,6 +19,8 @@ var _reactCalendar = _interopRequireDefault(require("react-calendar"));
 
 var _reactFit = _interopRequireDefault(require("react-fit"));
 
+var _dates = require("./shared/dates");
+
 var _DateInput = _interopRequireDefault(require("./DateInput"));
 
 var _propTypes2 = require("./shared/propTypes");
@@ -307,6 +309,53 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
       }, calendarIcon));
     }
   }, {
+    key: "getTileDisabled",
+    value: function getTileDisabled(_ref) {
+      var activeStartDate = _ref.activeStartDate,
+          date = _ref.date,
+          view = _ref.view;
+
+      if (view === 'month' && this.props.allotments) {
+        var yearIndex = (0, _dates.getYear)(date);
+        var monthIndex = (0, _dates.getMonth)(date);
+        var dayIndex = (0, _dates.getDay)(date);
+        return !(this.props.allotments[yearIndex] && this.props.allotments[yearIndex][monthIndex] && this.props.allotments[yearIndex][monthIndex][dayIndex]);
+      } else {
+        return false;
+      }
+    }
+  }, {
+    key: "getTileContent",
+    value: function getTileContent(_ref2) {
+      var date = _ref2.date,
+          view = _ref2.view;
+      var yearIndex = (0, _dates.getYear)(date);
+      var monthIndex = (0, _dates.getMonth)(date);
+      var dayIndex = (0, _dates.getDay)(date);
+
+      if (view === 'month' && this.props.allotments) {
+        var content = null;
+
+        if (this.props.allotments[yearIndex] && this.props.allotments[yearIndex][monthIndex] && this.props.allotments[yearIndex][monthIndex][dayIndex]) {
+          var dayData = this.props.allotments[yearIndex][monthIndex][dayIndex];
+
+          if (dayData.available < dayData.total) {
+            content = _react.default.createElement("p", {
+              className: "custom-tile-content custom-tile-content-blue"
+            }, dayData.text);
+          } else {
+            content = _react.default.createElement("p", {
+              className: "custom-tile-content custom-tile-content-blue"
+            }, dayData.text);
+          }
+        }
+
+        return content;
+      } else {
+        return null;
+      }
+    }
+  }, {
     key: "renderCalendar",
     value: function renderCalendar() {
       var disableCalendar = this.props.disableCalendar;
@@ -335,7 +384,9 @@ var DatePicker = /*#__PURE__*/function (_PureComponent) {
       }, /*#__PURE__*/_react["default"].createElement(_reactCalendar["default"], _extends({
         className: calendarClassName,
         onChange: this.onChange,
-        value: value || null
+        value: value || null,
+        tileDisabled: this.getTileDisabled.bind(this),
+        tileContent: this.getTileContent.bind(this)
       }, calendarProps))));
     }
   }, {
@@ -470,5 +521,6 @@ DatePicker.propTypes = {
   showLeadingZeros: _propTypes["default"].bool,
   value: _propTypes["default"].oneOfType([isValue, _propTypes["default"].arrayOf(isValue)]),
   yearAriaLabel: _propTypes["default"].string,
-  yearPlaceholder: _propTypes["default"].string
+  yearPlaceholder: _propTypes["default"].string,
+  allotments: _propTypes.default.any
 };
